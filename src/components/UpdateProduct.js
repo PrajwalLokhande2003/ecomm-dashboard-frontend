@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Loder from "./Loder";
 
 const UpdateProduct = () => {
 
@@ -10,6 +11,7 @@ const UpdateProduct = () => {
     const [company, setCompany] = useState('')
     const params = useParams()
     const [error, setError] = useState('')
+    const [loding,setLoding] = useState()
     const Navigate = useNavigate()
 
     useEffect(() => {
@@ -38,6 +40,7 @@ const UpdateProduct = () => {
 
     const updateProduct = async (e) => {
         e.preventDefault()
+        setLoding(true)
 
         if (!name || !price || !category || !company) {
             setError(true)
@@ -53,6 +56,7 @@ const UpdateProduct = () => {
         }).then(result => {
             if (result) {
                 Navigate('/')
+                setLoding(false)
 
             }
         })
@@ -62,6 +66,7 @@ const UpdateProduct = () => {
 
     return (
         <>
+        {loding && <Loder/>}
             <div>
                 <form onSubmit={updateProduct} className="update_product">
                     <h2>Update Product</h2>

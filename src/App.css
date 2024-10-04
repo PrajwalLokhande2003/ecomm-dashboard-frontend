@@ -167,3 +167,34 @@
   font-size: 15px;
   padding: 2px;
 }
+
+.loder{
+  height: 50px;
+    width: 50px;
+    border: 10px solid #d2d1d1;
+    border-radius: 50%;
+    border-top: 10px solid rgb(0, 153, 255);
+    position: absolute;
+    margin: 15% 0 0 45%;
+    animation: spin 3s infinite forwards ease-in;
+    -webkit-animation: spin 1s infinite linear;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loder-div{
+  background: #9489894d;
+    height: 84%;
+    z-index: 2;
+    position: absolute;
+    top: 9.5%;
+    width: 100%;
+}

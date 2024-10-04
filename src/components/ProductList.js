@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import axios from "axios";
+import Loder from "./Loder";
 const ProductList = () => {
 
     const [products, setProducts] = useState([])
+    const [loding,setLoding] = useState()
     const userId = JSON.parse(localStorage.getItem('user'))._id
     
     useEffect(() => {
@@ -14,12 +16,14 @@ const ProductList = () => {
     }, [])
 
     const getProducts =  async() => {
+        setLoding(true);
          await axios.get(`https://ecomm-dashboard-ar1h.onrender.com/products/${userId}`,{
             headers:{
                 authorization:`${JSON.parse(localStorage.getItem('token'))}`
             }
          }).then((res)=>{
             setProducts(res.data)
+            setLoding(false)
             
         })
         .catch((err)=>{
@@ -37,7 +41,7 @@ const ProductList = () => {
             }
         })
         if(result){
-            alert('product removed')
+            // alert('product removed')
             getProducts()
         }
         
@@ -65,7 +69,9 @@ const ProductList = () => {
 
     return (
         <>
+         {loding && <Loder/>}
             <div className="product-list">
+               
                 <h2>Product List</h2>
                 <input type="text" className="searchBar" placeholder="Search Product" onChange={searchHandel}/>
                 <ul style={{marginTop:'20px'}}>
@@ -92,7 +98,7 @@ const ProductList = () => {
                             <li>$ {item.price}</li>
                             <li>{item.category}</li>
                             <li>{item.company}</li>
-                            <li style={{overflow:'hidden'}}><DeleteIcon onClick={()=>{deleteProduct(item._id)}} className="deleteBtn"/>
+                            <li style={{overflow:'hidden'}}>{<DeleteIcon onClick={()=>{deleteProduct(item._id)}} className="deleteBtn"/>}
                              <Link to={`/update/${item._id}`}><EditIcon/></Link></li>
                         </ul>
                     )

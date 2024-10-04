@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import {useParams,useNavigate} from 'react-router-dom'
 import axios from "axios";
+import Loder from "./Loder";
 
 const Profile = () =>{
 
     const [name,setName] = useState('')
     const [email,setEmail] = useState('')
     const [userId,setUserid] = useState('')
+    const [loding,setLoding] = useState()
 
     const Navigate = useNavigate()
     const params = useParams()
@@ -17,6 +19,7 @@ const Profile = () =>{
     },[])
 
     const getData = async () =>{
+        setLoding(true)
         await axios.get(`https://ecomm-dashboard-ar1h.onrender.com/user-data/${params.id}`,{
             headers:{
                 authorization:JSON.parse(localStorage.getItem('token'))
@@ -25,6 +28,7 @@ const Profile = () =>{
         setName(result.data[0].name)
         setEmail(result.data[0].email)
         setUserid(result.data[0]._id)
+        setLoding(false)
         
     })
         
@@ -56,6 +60,7 @@ const Profile = () =>{
 
     return(
         <>
+        {loding && <Loder/>}
         <div>
         <form  onSubmit={updateProfile} className="update_profile">
             <h2>Profile</h2>

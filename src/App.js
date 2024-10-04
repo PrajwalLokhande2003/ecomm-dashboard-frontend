@@ -11,6 +11,7 @@ import ProductList from "./components/ProductList";
 import UpdateProduct from "./components/UpdateProduct";
 import UpdateImage from "./components/UpdateImage";
 import Profile from "./components/Profile";
+// import Loder from "./components/Loder";
 const App = () =>{
     return(
         <>

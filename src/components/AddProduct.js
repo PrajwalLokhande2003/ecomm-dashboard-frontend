@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios'
+import Loder from "./Loder";
 
 const AddProduct = (e) =>{
 
@@ -10,11 +11,13 @@ const AddProduct = (e) =>{
     const [company,setCompany] = useState('')
     const [image,setImage] = useState('')
     const [error,setError] = useState('')
+    const [loding,setLoding] = useState()
     const Navigate = useNavigate()
 
     const addProduct = async(e) =>{
 
         e.preventDefault()
+        setLoding(true);
 
         if(!name || !price || !category || !company || !image){
             setError(true)
@@ -28,16 +31,19 @@ const AddProduct = (e) =>{
         formData.append('company',company)
         formData.append('category',category)
         formData.append('userId',userId)
-        let result = await axios.post('https://ecomm-dashboard-ar1h.onrender.com/add-product',formData,{
+        await axios.post('https://ecomm-dashboard-ar1h.onrender.com/add-product',formData,{
             headers:{
                 'Content-Type':'multipart/form-data',
                 authorization:JSON.parse(localStorage.getItem('token'))
                 
             }
+        }).then((res)=>{
+            // eslint-disable-next-line no-cond-assign
+            if(res.status = 200){
+                Navigate('/')
+                setLoding(false)
+            }
         })
-        if(result){
-            Navigate('/')
-        }
         
         
     }
@@ -45,6 +51,7 @@ const AddProduct = (e) =>{
     return(
         <>
         <div >
+            {loding && <Loder/>}
             <form onSubmit={addProduct} className="add_product">
             <h2>Add Product</h2>
             <input type="text" placeholder="Enter Product Name" className="inputbox" value={name} onChange={(e)=>setName(e.target.value)}/>

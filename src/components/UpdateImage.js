@@ -2,16 +2,20 @@
 import React, { useState } from "react";
 import axios from "axios";
 import {useParams,useNavigate} from 'react-router-dom'
+import Loder from "./Loder";
 
 
 const UpdateImage = () =>{
 
     const [image,setImage] = useState('')
+    const [loding,setLoding] = useState()
+    
     const Navigate = useNavigate()
     const params = useParams()
 
     const updateImg = async(e) =>{
         e.preventDefault()
+        setLoding(true)
         const formData = new FormData()
         formData.append('image',image)
         let result = await axios.put(`https://ecomm-dashboard-ar1h.onrender.com/update-product-image/${params.id}`,formData,{
@@ -23,11 +27,13 @@ const UpdateImage = () =>{
         })
         if(result){
             Navigate('/')
+            setLoding(false)
         }
     }
 
     return(
         <>
+        {loding && <Loder/>}
         <div>
         <form onSubmit={updateImg} className="update_image">
         <h3>Update Image</h3>
